@@ -23,17 +23,19 @@ red_intvar = tkinter.IntVar()
 red_intvar.set(127) 
 green_intvar = tkinter.IntVar()
 green_intvar.set(127)
+blue_intvar = tkinter.IntVar()
+blue_intvar.set(127)
 
 ######
 # Create Controller
 #######
 # Event handler for slider
 def color_changed(new_intval):
+    tk_color_string = color(red_intvar, green_intvar, blue_intvar)
     # Controller updates the view by pulling data from model
-    editor.insert(tkinter.END, '#' + \
-                               hexstring(red_intvar) + \
-                               hexstring(green_intvar) + '00\n')
+    editor.insert(tkinter.END, tk_color_string + '\n')
     editor.see(tkinter.END) # scroll the Text window to see the new bottom line
+    canvas.configure(bg=tk_color_string)
             
 # Instantiate and place sliders
 red_slider = tkinter.Scale(root, from_=0, to=255, variable=red_intvar, 
@@ -44,6 +46,11 @@ green_slider = tkinter.Scale(root, from_=0, to=255, variable=green_intvar,
                              orient=tkinter.HORIZONTAL,
                              label='Green', command=color_changed)
 green_slider.grid(row=2, column=0, sticky=tkinter.E)
+blue_slider = tkinter.Scale(root, from_=0, to=255, variable=blue_intvar,
+                             orient=tkinter.HORIZONTAL,
+                             label='Blue', command=color_changed)
+blue_slider.grid(row=3, column=0, sticky=tkinter.E)
+
 # Create and place directions for the user
 text = tkinter.Label(root, text='Drag slider \nto adjust\ncolor code.')
 text.grid(row=0, column=0)
@@ -76,6 +83,15 @@ def hexstring(slider_intvar):
     if len(slider_hex_digits)==1:
         slider_hex_digits = '0' + slider_hex_digits 
     return slider_hex_digits
+
+
+def color(r, g, b):
+    '''Takes three IntVar and returns a color Tkinter string like #FFFFFF.        
+    '''
+    rx = hexstring(r)
+    gx = hexstring(g)
+    bx = hexstring(b)
+    return '#'+rx+gx+bx
 
 
 canvas = tkinter.Canvas(root, width=100, height=100)

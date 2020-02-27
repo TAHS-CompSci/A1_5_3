@@ -9,7 +9,7 @@
 # 
 # 
 #####
-import Tkinter
+import tkinter as Tkinter
 
 ####
 # Create the main window
