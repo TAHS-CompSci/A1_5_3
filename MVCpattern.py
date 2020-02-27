@@ -66,13 +66,10 @@ radius_slider = tkinter.Scale(root, from_=1, to=150, variable=radius_intvar,
 radius_slider.grid(row=1, column=0, sticky=tkinter.W)
 
 y_change = tkinter.Scale(root,from_=-150, to=150,label = 'Y-Position',variable = y_intvar, command = y_posChange)
-y_change.grid(row=0, column=3, sticky=tkinter.W)
-
-text = tkinter.Label(root, text='Drag slider \nto adjust\ncircle.')
-text.grid(row=1, column=3)
+y_change.grid(row=0, column=0, sticky=tkinter.W)
 
 x_change = tkinter.Scale(root, from_=-150, to=150,label='X-Position', variable=x_intvar, command=x_posChange)
-x_change.grid(row=2, column=3, sticky=tkinter.W)
+x_change.grid(row=2, column=0, sticky=tkinter.W)
 
 red_slider = tkinter.Scale(root, from_=0, to=255, variable=red_intvar,
                            orient=tkinter.HORIZONTAL,
@@ -87,11 +84,8 @@ blue_slider = tkinter.Scale(root, from_=0, to=255, variable=blue_intvar,
                             label='Blue', command=color_changed)
 blue_slider.grid(row=2, column=2, sticky=tkinter.E)
 
-text = tkinter.Label(root, text='Drag slider \nto adjust\ncircle.')
-text.grid(row=0, column=0)
-
 canvas = tkinter.Canvas(root, width=600, height=600, background='#000000')
-canvas.grid(row=0, rowspan=2, column=4)
+canvas.grid(row=0, rowspan=3, column=4)
 
 editor = tkinter.Text(root, width=10)
 editor.grid(column=5, row=0, rowspan=3)
