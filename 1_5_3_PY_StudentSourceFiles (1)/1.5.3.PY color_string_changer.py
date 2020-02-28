@@ -24,12 +24,16 @@ red_intvar.set(127)
 green_intvar = tkinter.IntVar()
 green_intvar.set(127)
 
+r=100
+x=150
+y=150
 ######
 # Create Controller
 #######
 # Event handler for slider
 def color_changed(new_intval):
     # Controller updates the view by pulling data from model
+    canvas.itemconfig(circle_item, fill="#" + hexstring(red_intvar) + hexstring(green_intvar) + '00')
     editor.insert(tkinter.END, '#' + \
                                hexstring(red_intvar) + \
                                hexstring(green_intvar) + '00\n')
@@ -45,15 +49,20 @@ green_slider = tkinter.Scale(root, from_=0, to=255, variable=green_intvar,
                              label='Green', command=color_changed)
 green_slider.grid(row=2, column=0, sticky=tkinter.E)
 # Create and place directions for the user
-Text = tkinter.Label(root, Text='Drag slider \nto adjust\ncolor code.')
-Text.grid(row=0, column=0)
+text = tkinter.Label(root, text='Drag slider \nto adjust\ncolor code.')
+text.grid(row=0, column=0)
 
+
+canvas = tkinter.Canvas(root, width=300, height=300, background='#FFFFFF')
+canvas.grid(row=0, rowspan=3, column=1)
+
+circle_item=canvas.create_oval(x-r, y-r, x+r, y+r, outline='#000000', fill='#7F7F7F')
 ######
 # Create View
 #######
 # Create a Text editor window for displaying information
 editor = tkinter.Text(root, width=10)
-editor.grid(column=1, row=0, rowspan=3)
+editor.grid(column=4, row=0, rowspan=3)
 
 ######
 # Function to convert IntVar data from Scale widget to two hex digits as string
