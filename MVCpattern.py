@@ -16,7 +16,7 @@ x_intvar = tkinter.IntVar()
 x_intvar.set(0)
 x = 300
 y = 300
-
+shapes = []
 
 def color_changed(new_intval):
     tk_color_string = color(red_intvar, green_intvar, blue_intvar)
@@ -40,35 +40,21 @@ def color(r, g, b):
     bx = hexstring(b)
     return '#'+rx+gx+bx
 
-def radius_changed(new_intval):
+def shape_changed(new_intval):
     r = radius_intvar.get() 
     xp = x_intvar.get()
     yp = y_intvar.get()
     canvas.coords(circle_item, x-r+xp, y-r+yp, x+r+xp, y+r+yp)
 
 
-def y_posChange(new_intval):
-    yp = y_intvar.get()
-    xp = x_intvar.get()
-    r = radius_intvar.get()
-    canvas.coords(circle_item,x-r+xp,y-r+yp,x+r+xp,y+r+yp)
-
-
-def x_posChange(new_intval):
-    xp = x_intvar.get()
-    yp = y_intvar.get()
-    r = radius_intvar.get()
-    canvas.coords(circle_item, x-r+xp, y-r+yp, x+r+xp, y+r+yp)
-
-
 radius_slider = tkinter.Scale(root, from_=1, to=150, variable=radius_intvar,
-                              label='Radius', command=radius_changed)
+                              label='Radius', command=shape_changed)
 radius_slider.grid(row=1, column=0, sticky=tkinter.W)
 
-y_change = tkinter.Scale(root,from_=-150, to=150,label = 'Y-Position',variable = y_intvar, command = y_posChange)
+y_change = tkinter.Scale(root,from_=-150, to=150,label = 'Y-Position',variable = y_intvar, command = shape_changed)
 y_change.grid(row=0, column=0, sticky=tkinter.W)
 
-x_change = tkinter.Scale(root, from_=-150, to=150,label='X-Position', variable=x_intvar, command=x_posChange)
+x_change = tkinter.Scale(root, from_=-150, to=150,label='X-Position', variable=x_intvar, command=shape_changed)
 x_change.grid(row=2, column=0, sticky=tkinter.W)
 
 red_slider = tkinter.Scale(root, from_=0, to=255, variable=red_intvar,
@@ -93,5 +79,25 @@ editor.grid(column=5, row=0, rowspan=3)
 r = radius_intvar.get()
 circle_item = canvas.create_oval(x-r, y-r, x+r, y+r,
                                  outline='#000000', fill='#00FFFF')
+
+startx, starty = 300, 300
+
+def down(event):  
+    global startx, starty  
+    startx = event.x  
+    starty = event.y
+
+
+def up(event):
+    tk_color_string = color(red_intvar, green_intvar, blue_intvar)
+    r = (startx-event.x)**2 + (starty-event.y)**2  
+    r = int(r**.5)
+    new_shape = canvas.create_rectangle(
+        x-r, y-r, x+r, y+r, outline=tk_color_string)
+    shapes.append(new_shape)  
+
+canvas.bind('<Button-1>', down)
+canvas.bind('<ButtonRelease-1>', up)
+
 
 root.mainloop()
