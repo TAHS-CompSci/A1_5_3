@@ -89,11 +89,13 @@ def down(event):
 
 
 def up(event):
+    xp = x_intvar.get()
+    yp = y_intvar.get()
     tk_color_string = color(red_intvar, green_intvar, blue_intvar)
     r = (startx-event.x)**2 + (starty-event.y)**2  
     r = int(r**.5)
     new_shape = canvas.create_rectangle(
-        x-r, y-r, x+r, y+r, outline=tk_color_string)
+        x-r+xp, y-r+yp, x+r+xp, y+r+yp, outline=tk_color_string)
     shapes.append(new_shape)  
 
 canvas.bind('<Button-1>', down)
