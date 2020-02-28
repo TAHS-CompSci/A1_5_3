@@ -7,53 +7,62 @@
 # version 11/1/2013
 ####
 
-import Tkinter # Often people import Tkinter as *
+import tkinter # Often people import Tkinter as *
 
 #####
 # Create root window 
 ####
-root = Tkinter.Tk()
+root = tkinter.Tk()
 root.wm_title('Hexadecimal Explorer')
 
 #####
 # Create Model
 ######
 # Create two IntVar's and initialize them to 127
-red_intvar = Tkinter.IntVar() 
+red_intvar = tkinter.IntVar() 
 red_intvar.set(127) 
-green_intvar = Tkinter.IntVar()
+green_intvar = tkinter.IntVar()
 green_intvar.set(127)
-
+r = 100
+x = 150
+y = 150
 ######
 # Create Controller
 #######
 # Event handler for slider
 def color_changed(new_intval):
     # Controller updates the view by pulling data from model
-    editor.insert(Tkinter.END, '#' + \
+    canvas.itemconfig(circle_item, fill='#' + \
+                                hexstring(red_intvar) +
+                                hexstring(green_intvar) +'00')
+    editor.insert(tkinter.END, '#' + \
                                hexstring(red_intvar) + \
                                hexstring(green_intvar) + '00\n')
-    editor.see(Tkinter.END) # scroll the Text window to see the new bottom line
+    editor.see(tkinter.END) # scroll the Text window to see the new bottom line
             
 # Instantiate and place sliders
-red_slider = Tkinter.Scale(root, from_=0, to=255, variable=red_intvar, 
-                           orient=Tkinter.HORIZONTAL,   
+red_slider = tkinter.Scale(root, from_=0, to=255, variable=red_intvar, 
+                           orient=tkinter.HORIZONTAL,   
                            label='Red', command=color_changed)
-red_slider.grid(row=1, column=0, sticky=Tkinter.E)
-green_slider = Tkinter.Scale(root, from_=0, to=255, variable=green_intvar,  
-                             orient=Tkinter.HORIZONTAL,
+red_slider.grid(row=1, column=0, sticky=tkinter.E)
+green_slider = tkinter.Scale(root, from_=0, to=255, variable=green_intvar,  
+                             orient=tkinter.HORIZONTAL,
                              label='Green', command=color_changed)
-green_slider.grid(row=2, column=0, sticky=Tkinter.E)
+green_slider.grid(row=2, column=0, sticky=tkinter.E)
 # Create and place directions for the user
-text = Tkinter.Label(root, text='Drag slider \nto adjust\ncolor code.')
+text = tkinter.Label(root, text='Drag slider \nto adjust\ncolor code.')
 text.grid(row=0, column=0)
 
 ######
 # Create View
 #######
 # Create a text editor window for displaying information
-editor = Tkinter.Text(root, width=10)
-editor.grid(column=1, row=0, rowspan=3)
+canvas = tkinter.Canvas(root, width=300, height=300, background= '#FFFFFF')
+canvas.grid(row=0, rowspan=3, column=1)
+
+circle_item = canvas.create_oval(x-r, y-r, x+r, y+r, outline = '#000000', fill = '#7F7F7F')
+editor = tkinter.Text(root, width=10)
+editor.grid(column=4, row=0, rowspan=3)
 
 ######
 # Function to convert IntVar data from Scale widget to two hex digits as string
